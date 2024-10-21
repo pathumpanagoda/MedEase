@@ -14,6 +14,7 @@ import Appointments from "./appointments/Appointments";
 import Patients from "./patients/Patients";
 import StaffAppointments from "./staff-appointments/StaffAppointments";
 import LabReports from "./lab-reports/LabReports";
+import Userimg from "../assets/user1.png";
 
 const { Header, Sider, Content } = Layout;
 const { Search } = Input;
@@ -31,8 +32,8 @@ const Dashboard = () => {
         <div style={{ padding: "20px" }}>
           <h2 style={{ color: "#FF6B6B", margin: 0 }}>MedEase</h2>
         </div>
-        <div style={{ padding: "20px", borderBottom: "1px solid #f0f0f0" }}>
-          <Avatar size={64} style={{ backgroundColor: "#f0f0f0" }} />
+        <div style={{ padding: "20px", borderBottom: "1px solid #f0f0f0", marginLeft: "20px"}}>
+          <img src={Userimg} alt="avatar" style={{ width: "50px", height: "50px", borderRadius: "50%" }} />
           <h3 style={{ marginTop: "10px", marginBottom: "5px" }}>Mr. Miran</h3>
           <p style={{ color: "#8c8c8c", margin: 0 }}>
             Specialized Doctor (MBBs)
