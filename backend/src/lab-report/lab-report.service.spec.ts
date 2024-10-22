@@ -4,6 +4,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { LabReport } from './lab-report.interface';
 import { LabReportFactory } from './lab-report.factory';
 import { LabReportStatus } from './lab-report-status';
+import { NotFoundException } from '@nestjs/common';
 
 const mockLabReport = {
   patientId: '1',
@@ -93,4 +94,23 @@ describe('LabReportService', () => {
     const result = await service.deleteLabReport('1');
     expect(result).toEqual(mockLabReport);
   });
+
+  // Negative test cases
+  it('should throw NotFoundException when trying to get a non-existent lab report', async () => {
+    mockLabReportModel.findById.mockReturnValueOnce({
+      exec: jest.fn().mockResolvedValue(null),
+    });
+
+    await expect(service.getLabReportById('non-existent-id')).rejects.toThrow(NotFoundException);
+  });
+
+  it('should throw NotFoundException when trying to delete a non-existent lab report', async () => {
+    mockLabReportModel.findByIdAndDelete.mockReturnValueOnce({
+      exec: jest.fn().mockResolvedValue(null),
+    });
+
+    await expect(service.deleteLabReport('non-existent-id')).rejects.toThrow(NotFoundException);
+  });
+
+ 
 });
