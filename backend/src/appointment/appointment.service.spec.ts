@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppointmentService } from './appointment.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { Appointment } from './appointment.interface';
+import { NotFoundException } from '@nestjs/common';
 
 const mockAppointment = {
   patientName: 'Jane Doe',
@@ -71,4 +72,33 @@ describe('AppointmentService', () => {
     const result = await service.deleteAppointment('1');
     expect(result).toEqual(mockAppointment);
   });
+
+  // Negative test cases
+  it('should throw NotFoundException when trying to get a non-existent appointment', async () => {
+    mockAppointmentModel.findById.mockReturnValueOnce({
+      exec: jest.fn().mockResolvedValue(null),
+    });
+
+    await expect(service.getAppointmentById('non-existent-id')).rejects.toThrow(NotFoundException);
+  });
+
+  it('should throw NotFoundException when trying to update a non-existent appointment', async () => {
+    mockAppointmentModel.findByIdAndUpdate.mockReturnValueOnce({
+      exec: jest.fn().mockResolvedValue(null),
+    });
+
+    await expect(
+      service.updateAppointment('non-existent-id', { status: 'Confirmed' })
+    ).rejects.toThrow(NotFoundException);
+  });
+
+  it('should throw NotFoundException when trying to delete a non-existent appointment', async () => {
+    mockAppointmentModel.findByIdAndDelete.mockReturnValueOnce({
+      exec: jest.fn().mockResolvedValue(null),
+    });
+
+    await expect(service.deleteAppointment('non-existent-id')).rejects.toThrow(NotFoundException);
+  });
+
+  
 });
